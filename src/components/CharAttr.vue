@@ -1,5 +1,6 @@
 <template>
-  <div :class="`column items-center justify-center q-ma-xs q-pa-xs ${attr.condition.check ? 'bg-orange-8' : ''
+  <div :class="`column items-center justify-center q-ma-xs q-pa-xs ${
+    cond2Check ? 'bg-red-8' : (attr.condition.check ? 'bg-orange-8' : '')
     } rounded-borders outlined`">
     <q-btn class="row justify-center items-center" @click="showRoller = true" flat rounded>
       <span class="text-h5 text-bold">{{ t('attributes.' + label) }}</span>
@@ -7,11 +8,15 @@
     </q-btn>
 
     <q-btn :label="`${attr.score}`" class="col-shrink text-bold q-pa-none" size="lg" @click="editAttr" flat rounded />
+    
     <q-checkbox class="q-mt-xs" :label="t('conditions.' + attr.condition.name)" v-model="attr.condition.check" size="sm" left-label dense
       unchecked-icon="mdi-emoticon-happy" checked-icon="mdi-skull" color="orange-8" />
+
+    <q-checkbox class="q-mt-xs" :label="t('conditions.' + (attr.condition2?.name || attr.condition.name))" v-model="cond2Check" :disable="!attr.condition.check" size="sm" left-label dense
+      unchecked-icon="mdi-emoticon-happy" checked-icon="mdi-skull" color="red-8" />
   </div>
   <q-dialog v-model="showRoller" maximized>
-    <dice-roller :name="t('attributes.' + label)" :banes="attr.condition.check ? 1 : 0" :target="attr.score" :roll-type="RollTypes.Attr"
+    <dice-roller :name="t('attributes.' + label)" :banes="cond2Check ? 2 : (attr.condition.check ? 1 : 0)" :target="attr.score" :roll-type="RollTypes.Attr"
       @close="showRoller = false" @result="
         (r) =>
           notifySend(
@@ -23,10 +28,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-import type { Attribute } from './models';
+import type { Attribute, Condition } from './models';
 import { D20Results, RollTypes } from './models';
 
 import { useQuasar } from 'quasar';
@@ -38,6 +43,44 @@ import DiceRoller from './DiceRoller.vue';
 
 const attr = defineModel<Attribute>({ required: true });
 const props = defineProps<{ label: string }>();
+
+const Condition2Map: Record<string, string> = {
+  Exhausted: 'Drained',
+  Sickly: 'Sickness',
+  Dazed: 'Confused',
+  Angry: 'Furious',
+  Scared: 'Terrified',
+  Disheartened: 'Despairing',
+};
+
+// Safe initialization of condition2 for older characters
+if (!attr.value.condition2 || attr.value.condition2.name === attr.value.condition.name) {
+  attr.value.condition2 = {
+    name: (Condition2Map[attr.value.condition.name] || attr.value.condition.name) as Condition,
+    check: attr.value.condition2?.check || false,
+  };
+}
+
+const cond2Check = computed({
+  get(): boolean {
+    return attr.value.condition2?.check || false;
+  },
+  set(v: boolean) {
+    if (attr.value.condition2) {
+      attr.value.condition2.check = v;
+    }
+  }
+});
+
+// Automatically uncheck condition2 if condition1 is unchecked
+watch(
+  () => attr.value.condition.check,
+  (checked) => {
+    if (!checked && attr.value.condition2) {
+      attr.value.condition2.check = false;
+    }
+  }
+);
 
 const $q = useQuasar();
 const { t } = useI18n();

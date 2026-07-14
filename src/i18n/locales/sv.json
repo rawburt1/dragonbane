@@ -175,11 +175,17 @@
   },
   "conditions": {
     "Exhausted": "Utmattad",
+    "Drained": "Dränerad",
     "Sickly": "Krasslig",
+    "Sickness": "Sjuklig",
     "Dazed": "Omtöcknad",
+    "Confused": "Förvirrad",
     "Angry": "Arg",
+    "Furious": "Ursinnig",
     "Scared": "Rädd",
-    "Disheartened": "Uppgiven"
+    "Terrified": "Skräckslagen",
+    "Disheartened": "Uppgiven",
+    "Despairing": "Förtvivlad"
   },
   "durations": {
     "Instant": "Direkt",

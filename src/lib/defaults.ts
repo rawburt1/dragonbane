@@ -100,10 +100,30 @@ export const skill = (attr: Attr): Skill => ({
   advances: 0,
 });
 
+const Condition2Map: Record<Condition, Condition> = {
+  [Conditions.Exhausted]: Conditions.Drained,
+  [Conditions.Sickly]: Conditions.Sickness,
+  [Conditions.Dazed]: Conditions.Confused,
+  [Conditions.Angry]: Conditions.Furious,
+  [Conditions.Scared]: Conditions.Terrified,
+  [Conditions.Disheartened]: Conditions.Despairing,
+
+  [Conditions.Drained]: Conditions.Drained,
+  [Conditions.Sickness]: Conditions.Sickness,
+  [Conditions.Confused]: Conditions.Confused,
+  [Conditions.Furious]: Conditions.Furious,
+  [Conditions.Terrified]: Conditions.Terrified,
+  [Conditions.Despairing]: Conditions.Despairing,
+};
+
 export const stat = (cond: Condition): Attribute => ({
   score: 0,
   condition: {
     name: cond,
+    check: false,
+  },
+  condition2: {
+    name: Condition2Map[cond] || cond,
     check: false,
   },
 });

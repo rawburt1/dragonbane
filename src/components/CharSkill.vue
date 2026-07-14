@@ -1,5 +1,7 @@
 <template>
-  <div :class="`row items-center justify-between q-ma-none q-px-xs ${baned ? 'bg-orange-8' : ''}`">
+  <div :class="`row items-center justify-between q-ma-none q-px-xs ${
+    cond2Checked ? 'bg-red-8' : (baned ? 'bg-orange-8' : '')
+  }`">
     <q-checkbox
       v-if="editSkills"
       class="q-ml-xs q-mb-xs"
@@ -130,6 +132,7 @@ const decrement = () => {
 const baned = computed((): boolean => {
   let b = false;
   if (app.char.attributes[skill.value.attr].condition.check) b = true;
+  if (app.char.attributes[skill.value.attr].condition2?.check) b = true;
 
   Object.keys(app.char.armour.bane).forEach((k) => {
     if (app.char.armour.bane[k] && k == props.label) b = true;
@@ -152,6 +155,7 @@ const baned = computed((): boolean => {
 const banes = computed((): number[] => {
   const b = [];
   if (app.char.attributes[skill.value.attr].condition.check) b.push(0);
+  if (app.char.attributes[skill.value.attr].condition2?.check) b.push(0);
 
   Object.keys(app.char.armour.bane).forEach((k) => {
     if (app.char.armour.bane[k] && k == props.label) b.push(0);
@@ -169,6 +173,10 @@ const banes = computed((): number[] => {
   });
 
   return b;
+});
+
+const cond2Checked = computed((): boolean => {
+  return !!app.char.attributes[skill.value.attr].condition2?.check;
 });
 
 const showRoller = ref(false);

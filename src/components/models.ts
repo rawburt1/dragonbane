@@ -57,6 +57,10 @@ export interface Attribute {
     name: Condition;
     check: boolean;
   };
+  condition2?: {
+    name: Condition;
+    check: boolean;
+  };
 }
 
 export interface Skill {
@@ -192,6 +196,13 @@ export const Conditions = {
   Angry: 'Angry',
   Scared: 'Scared',
   Disheartened: 'Disheartened',
+
+  Drained: 'Drained',
+  Sickness: 'Sickness',
+  Confused: 'Confused',
+  Furious: 'Furious',
+  Terrified: 'Terrified',
+  Despairing: 'Despairing',
 } as const;
 
 export type Condition = (typeof Conditions)[keyof typeof Conditions];
