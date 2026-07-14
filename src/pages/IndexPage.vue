@@ -34,15 +34,15 @@
         <points-block v-model="app.char.hp" :label="t('ui.hp')" />
       </div>
       <div class="col-xs-4 col-sm-4 col-md-3">
-        <points-block v-model="app.char.wp" :label="t('ui.wp')" label-right />
+        <points-block v-model="app.char.wp" :label="t('ui.wp')" />
       </div>
     </div>
 
 
     <div class="row justify-evenly q-mb-md">
-      <q-btn v-if="statsRolled" class="col-12 q-mb-sm" icon="mdi-dice-d20" flat @click="rollStats" :label="t('ui.rollStats')">
-        <q-tooltip>{{ t('ui.rollStats') }}</q-tooltip>
-      </q-btn>
+      <div class="col-12 text-center q-mb-sm text-h6 text-bold">
+        {{ t('ui.sum') }}: {{ attributeSum }}/78
+      </div>
       <div class="col-xs-4 col-sm-2 col-md-2">
         <char-attr :label="Attrs.STR" v-model="app.char.attributes.STR" />
       </div>
@@ -143,39 +143,10 @@ const Professions = [
 ];
 
 const $q = useQuasar();
-const rollStats = () =>
-  $q
-    .dialog({
-      message: t('ui.rollStatsConfirm'),
-      cancel: true,
-    })
-    .onOk(() => {
-      const r = (): number => {
-        let sum = 0;
-
-        const rolls: number[] = new Array(4).fill(0);
-        rolls.forEach((n, i) => (rolls[i] = Math.floor(Math.random() * 6) + 1));
-        rolls.sort();
-        rolls.shift();
-        rolls.forEach((roll) => (sum += roll));
-
-        return sum;
-      };
-
-      Object.keys(Attrs).forEach((attr) => (app.char.attributes[attr as Attr].score = r()));
-
-      const hp = app.char.attributes[Attrs.CON].score;
-      app.char.hp.max = hp;
-      app.char.hp.current = hp;
-
-      const wp = app.char.attributes[Attrs.WIL].score;
-      app.char.wp.max = wp;
-      app.char.wp.current = wp;
-    });
-const statsRolled = computed((): boolean => {
+const attributeSum = computed((): number => {
   let total = 0;
   Object.keys(Attrs).forEach((attr) => (total += app.char.attributes[attr as Attr].score));
-  return total == 0;
+  return total;
 });
 
 watch(
