@@ -17,9 +17,9 @@
         <div class="col">
           <div class="row">
             <q-select class="col" options-selected-class="text-purple-2" :label="t('ui.kin')" v-model="app.char.kin"
-              :options="Kins.map(k => ({ label: t('kins.' + k, k), value: k }))" dense emit-value map-options />
+              :options="Kins.map(k => ({ label: t('kins.' + k, k), value: k })).sort((a, b) => a.label.localeCompare(b.label))" dense emit-value map-options />
             <q-select class="col" options-selected-class="text-purple-2" :label="t('ui.profession')" v-model="app.char.profession"
-              :options="Professions.map(p => ({ label: t('professions.' + p, p), value: p }))" dense emit-value map-options />
+              :options="Professions.map(p => ({ label: t('professions.' + p, p), value: p })).sort((a, b) => a.label.localeCompare(b.label))" dense emit-value map-options />
           </div>
           <q-input class="row" :label="t('ui.weakness')" v-model="app.char.weakness" dense />
         </div>
