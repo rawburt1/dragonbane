@@ -33,7 +33,33 @@ export const useCharacterStore = defineStore('character', {
   }),
   getters: {
     char(state): Character {
-      return state.chars[state.conf.char]!;
+      const c = state.chars[state.conf.char]!;
+      if (c) {
+        if (!c.secSkills) c.secSkills = {};
+        const defaultSecSkills: Record<string, Attr> = {
+          'Demon Lore': 'INT',
+          'Dragon Lore': 'INT',
+          'Silver Tongue': 'INT',
+          'Geography & Culture': 'INT',
+          Courtesy: 'CHA',
+          Intrigue: 'CHA',
+          Teacher: 'INT',
+          Observation: 'INT',
+          Reputation: 'CHA',
+          Skiing: 'CHA',
+        };
+        Object.entries(defaultSecSkills).forEach(([name, attr]) => {
+          if (!c.secSkills[name]) {
+            c.secSkills[name] = {
+              attr,
+              trained: false,
+              checked: false,
+              advances: 0,
+            };
+          }
+        });
+      }
+      return c;
     },
     skill(): (skillType: SkillType, skillName: string) => Skill | undefined {
       return (skillType: SkillType, skillName: string): Skill | undefined => {
