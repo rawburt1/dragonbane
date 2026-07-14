@@ -40,8 +40,8 @@
         <div class="text-bold text-h6">
           {{ t('ui.dmgBonusLabel') }}:
           <span class="q-ml-sm text-subtitle1 text-normal text-grey-5">
-            {{ t('attributes.STR') }}: <span :class="app.conf.darkMode ? 'text-white' : 'text-black'" class="text-bold">{{ app.dmgBonus(Attrs.STR) }}</span>, 
-            {{ t('attributes.AGL') }}: <span :class="app.conf.darkMode ? 'text-white' : 'text-black'" class="text-bold">{{ app.dmgBonus(Attrs.AGL) }}</span>
+            {{ t('attributes.STR') }}: <span class="text-bold text-black">{{ app.dmgBonus(Attrs.STR) }}</span>, 
+            {{ t('attributes.AGL') }}: <span class="text-bold text-black">{{ app.dmgBonus(Attrs.AGL) }}</span>
           </span>
         </div>
       </div>
@@ -179,5 +179,23 @@ watch(
     }
   },
   { deep: true, immediate: true }
+);
+
+const KinMovement: Record<string, number> = {
+  Human: 10,
+  Elf: 10,
+  Dwarf: 8,
+  Halfling: 8,
+  Mallard: 8,
+  Wolfkin: 12,
+};
+
+watch(
+  () => app.char?.kin,
+  (newKin) => {
+    if (app.char && newKin && KinMovement[newKin] !== undefined) {
+      app.char.movement = KinMovement[newKin];
+    }
+  }
 );
 </script>
