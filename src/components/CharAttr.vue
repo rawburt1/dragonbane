@@ -1,5 +1,5 @@
 <template>
-  <div :class="`column items-center justify-center q-ma-xs q-pa-xs ${attr.condition.check ? 'bg-negative' : ''
+  <div :class="`column items-center justify-center q-ma-xs q-pa-xs ${attr.condition.check ? 'bg-orange-8' : ''
     } rounded-borders outlined`">
     <q-btn class="row justify-center items-center" @click="showRoller = true" flat rounded>
       <span class="text-h5 text-bold">{{ t('attributes.' + label) }}</span>
@@ -8,7 +8,7 @@
 
     <q-btn :label="`${attr.score}`" class="col-shrink text-bold q-pa-none" size="lg" @click="editAttr" flat rounded />
     <q-checkbox class="q-mt-xs" :label="t('conditions.' + attr.condition.name)" v-model="attr.condition.check" size="sm" left-label dense
-      unchecked-icon="mdi-emoticon-happy" checked-icon="mdi-skull" color="white" />
+      unchecked-icon="mdi-emoticon-happy" checked-icon="mdi-skull" color="orange-8" />
   </div>
   <q-dialog v-model="showRoller" maximized>
     <dice-roller :name="t('attributes.' + label)" :banes="attr.condition.check ? 1 : 0" :target="attr.score" :roll-type="RollTypes.Attr"

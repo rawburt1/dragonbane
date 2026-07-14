@@ -40,7 +40,8 @@
         <div class="text-bold text-h6">
           {{ t('ui.dmgBonusLabel') }}:
           <span class="q-ml-sm text-subtitle1 text-normal text-grey-5">
-            {{ t('attributes.STR') }}: {{ app.dmgBonus(Attrs.STR) }}, {{ t('attributes.AGL') }}: {{ app.dmgBonus(Attrs.AGL) }}
+            {{ t('attributes.STR') }}: <span :class="app.conf.darkMode ? 'text-white' : 'text-black'" class="text-bold">{{ app.dmgBonus(Attrs.STR) }}</span>, 
+            {{ t('attributes.AGL') }}: <span :class="app.conf.darkMode ? 'text-white' : 'text-black'" class="text-bold">{{ app.dmgBonus(Attrs.AGL) }}</span>
           </span>
         </div>
       </div>
