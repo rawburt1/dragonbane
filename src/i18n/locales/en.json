@@ -277,7 +277,13 @@
     "Merchant": "Merchant",
     "Scholar": "Scholar",
     "Thief": "Thief",
-    "Mariner": "Mariner"
+    "Mariner": "Mariner",
+    "Barbarian": "Barbarian",
+    "Demon Hunter": "Demon Hunter",
+    "Raider": "Raider",
+    "Assassin": "Assassin",
+    "Swordsman": "Swordsman",
+    "Ranger": "Ranger"
   },
   "tables": {
     "meleeDemon": {

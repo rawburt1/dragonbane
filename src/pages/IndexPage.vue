@@ -134,7 +134,7 @@ import GearTab from 'src/components/GearTab.vue';
 import LogTab from 'src/components/LogTab.vue';
 
 const app = useCharacterStore();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const tab = ref('skills');
 
 const Kins = ['Human', 'Halfling', 'Dwarf', 'Elf', 'Mallard', 'Wolfkin'];
@@ -149,6 +149,12 @@ const Professions = [
   'Scholar',
   'Thief',
   'Mariner',
+  'Barbarian',
+  'Demon Hunter',
+  'Raider',
+  'Assassin',
+  'Swordsman',
+  'Ranger',
 ];
 
 const $q = useQuasar();
@@ -195,6 +201,127 @@ watch(
   (newKin) => {
     if (app.char && newKin && KinMovement[newKin] !== undefined) {
       app.char.movement = KinMovement[newKin];
+    }
+  }
+);
+
+interface AbilityTemplate {
+  nameSv: string;
+  nameEn: string;
+  textSv: string;
+  textEn: string;
+  wp: number;
+}
+
+const ProfessionAbilities: Record<string, AbilityTemplate[]> = {
+  Barbarian: [{ nameSv: 'Härdad', nameEn: 'Hardened', wp: 0, textSv: 'Kostnad: - (Passiv). Du kan motstå smärta och skada. Din maximala KP ökar med 2.', textEn: 'Cost: - (Passive). You can resist pain and injury. Your maximum HP increases by 2.' }],
+  Bard: [{ nameSv: 'Tonkonst', nameEn: 'Music Talent', wp: 0, textSv: 'Kostnad: - (Passiv). Du kan spela instrument och sjunga för att inspirera andra.', textEn: 'Cost: - (Passive). You can play instruments and sing to inspire others.' }],
+  'Demon Hunter': [{ nameSv: 'Skuggfjättrare', nameEn: 'Shadow Binder', wp: 0, textSv: 'Kostnad: - (Passiv). Förmåga att binda eller försvaga demoner.', textEn: 'Cost: - (Passive). Ability to bind or weaken demons.' }],
+  Artisan: [
+    { nameSv: 'Garverimästare', nameEn: 'Master Tanner', wp: 0, textSv: 'Garverimästare specialisering.', textEn: 'Master Tanner specialization.' },
+    { nameSv: 'Mästersmed', nameEn: 'Master Blacksmith', wp: 0, textSv: 'Mästersmed specialisering.', textEn: 'Master Blacksmith specialization.' },
+    { nameSv: 'Mästersnikare', nameEn: 'Master Carpenter', wp: 0, textSv: 'Mästersnikare specialisering.', textEn: 'Master Carpenter specialization.' },
+    { nameSv: 'Stenhuggare', nameEn: 'Stonemason', wp: 0, textSv: 'Stenhuggare specialisering.', textEn: 'Stonemason specialization.' }
+  ],
+  Raider: [{ nameSv: 'Född på slagfältet', nameEn: 'Born on the Battlefield', wp: 0, textSv: 'Kostnad: - (Passiv). Ökar din stridsvana.', textEn: 'Cost: - (Passive). Increases your combat readiness.' }],
+  Hunter: [
+    { nameSv: 'Följeslagare', nameEn: 'Companion', wp: 0, textSv: 'Du har ett troget djur som följeslagare.', textEn: 'You have a faithful animal companion.' },
+    { nameSv: 'Blodhund', nameEn: 'Bloodhound', wp: 0, textSv: 'Förmåga att spåra fiender över långa avstånd.', textEn: 'Ability to track enemies over long distances.' }
+  ],
+  Fighter: [{ nameSv: 'Stridsvana', nameEn: 'Combat Ready', wp: 0, textSv: 'Kostnad: - (Passiv). Du får dra initiativkort med fördel.', textEn: 'Cost: - (Passive). You draw initiative cards with advantage.' }],
+  Scholar: [{ nameSv: 'Intuition', nameEn: 'Intuition', wp: 0, textSv: 'Kostnad: - (Passiv). Förmåga att ana dolda sammanhang.', textEn: 'Cost: - (Passive). Ability to sense hidden connections.' }],
+  Assassin: [
+    { nameSv: 'Alltid en flyktväg', nameEn: 'Always an Escape Route', wp: 0, textSv: 'Du hittar alltid en väg ut ur farliga situationer.', textEn: 'You always find a way out of dangerous situations.' },
+    { nameSv: 'Blottlägga svagheter', nameEn: 'Expose Weaknesses', wp: 0, textSv: 'Du kan hitta och utnyttja fiendens svagheter.', textEn: 'You can find and exploit enemy weaknesses.' }
+  ],
+  Mage: [{ nameSv: 'Magisk talang', nameEn: 'Magic Talent', wp: 0, textSv: 'Kostnad: - (Passiv). Krävs för att kunna kasta besvärjelser.', textEn: 'Cost: - (Passive). Required to cast spells.' }],
+  Merchant: [{ nameSv: 'Skattletare', nameEn: 'Treasure Hunter', wp: 0, textSv: 'Kostnad: - (Passiv). Förmåga att finna värdefulla ting.', textEn: 'Cost: - (Passive). Ability to find valuable things.' }],
+  Knight: [{ nameSv: 'Förkämpe', nameEn: 'Champion', wp: 0, textSv: 'Kostnad: - (Passiv). Du kan ta en smäll för en allierad.', textEn: 'Cost: - (Passive). You can take a hit for an ally.' }],
+  Mariner: [{ nameSv: 'Sjöben', nameEn: 'Sea Legs', wp: 0, textSv: 'Kostnad: - (Passiv). Får aldrig nackdel av att stå på gungande däck.', textEn: 'Cost: - (Passive). Never take a bane from standing on a swaying deck.' }],
+  Swordsman: [{ nameSv: 'Finess', nameEn: 'Finesse', wp: 0, textSv: 'Kostnad: - (Passiv). Du kan använda SMI istället för STY för vissa vapen.', textEn: 'Cost: - (Passive). You can use AGL instead of STR for certain weapons.' }],
+  Thief: [{ nameSv: 'Tjuvhugg', nameEn: 'Backstab', wp: 0, textSv: 'Kostnad: - (Passiv). Gör extra skada vid överraskningsanfall.', textEn: 'Cost: - (Passive). Deal extra damage during surprise attacks.' }],
+  Ranger: [{ nameSv: 'Vildmarksexpert', nameEn: 'Wilderness Expert', wp: 0, textSv: 'Kostnad: - (Passiv). Underlättar överlevnad i vildmarken.', textEn: 'Cost: - (Passive). Facilitates survival in the wilderness.' }]
+};
+
+const AllStartingAbilities = [
+  'Härdad', 'Hardened',
+  'Tonkonst', 'Music Talent',
+  'Skuggfjättrare', 'Shadow Binder',
+  'Garverimästare', 'Master Tanner',
+  'Mästersmed', 'Master Blacksmith',
+  'Mästersnikare', 'Master Carpenter',
+  'Stenhuggare', 'Stonemason',
+  'Född på slagfältet', 'Born on the Battlefield',
+  'Följeslagare', 'Companion',
+  'Blodhund', 'Bloodhound',
+  'Stridsvana', 'Combat Ready',
+  'Intuition', 'Intuition',
+  'Alltid en flyktväg', 'Always an Escape Route',
+  'Blottlägga svagheter', 'Expose Weaknesses',
+  'Magisk talang', 'Magic Talent',
+  'Skattletare', 'Treasure Hunter',
+  'Förkämpe', 'Champion',
+  'Sjöben', 'Sea Legs',
+  'Finess', 'Finesse',
+  'Tjuvhugg', 'Backstab',
+  'Vildmarksexpert', 'Wilderness Expert'
+];
+
+watch(
+  () => app.char?.profession,
+  (newProf) => {
+    if (!app.char) return;
+
+    if (!app.char.abilities) {
+      app.char.abilities = [];
+    }
+
+    // 1. Remove any previously added starting heroic ability
+    app.char.abilities = app.char.abilities.filter(
+      (a) => !AllStartingAbilities.includes(a.name)
+    );
+
+    if (!newProf) return;
+
+    const abilities = ProfessionAbilities[newProf];
+    if (abilities && abilities.length > 0) {
+      if (abilities.length === 1) {
+        // Only one ability, add it directly
+        const chosen = abilities[0]!;
+        app.char.abilities.push({
+          name: locale.value === 'sv' ? chosen.nameSv : chosen.nameEn,
+          wp: chosen.wp,
+          text: locale.value === 'sv' ? chosen.textSv : chosen.textEn
+        });
+      } else {
+        // Multiple options, show dialog
+        const options = abilities.map((a, index) => ({
+          label: locale.value === 'sv' ? a.nameSv : a.nameEn,
+          value: String(index)
+        }));
+
+        $q.dialog({
+          title: locale.value === 'sv' ? 'Välj startförmåga' : 'Choose Starting Ability',
+          message: locale.value === 'sv' 
+            ? 'Välj din startförmåga för detta yrke:' 
+            : 'Choose your starting heroic ability for this profession:',
+          options: {
+            type: 'radio',
+            model: '0',
+            items: options
+          },
+          cancel: true,
+          persistent: true
+        }).onOk((selectedValue: string) => {
+          const selectedIndex = Number(selectedValue);
+          const chosen = abilities[selectedIndex]!;
+          app.char.abilities.push({
+            name: locale.value === 'sv' ? chosen.nameSv : chosen.nameEn,
+            wp: chosen.wp,
+            text: locale.value === 'sv' ? chosen.textSv : chosen.textEn
+          });
+        });
+      }
     }
   }
 );

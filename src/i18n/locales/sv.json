@@ -268,16 +268,22 @@
     "Wolfkin": "Vargman"
   },
   "professions": {
-    "Artisan": "Hantveckare",
+    "Artisan": "Hantverkare",
     "Bard": "Bard",
     "Fighter": "Krigare",
     "Hunter": "Jägare",
     "Knight": "Riddare",
     "Mage": "Magiker",
-    "Merchant": "Köpman",
+    "Merchant": "Nasare",
     "Scholar": "Lärd",
     "Thief": "Tjuv",
-    "Mariner": "Sjöfarare"
+    "Mariner": "Sjöfarare",
+    "Barbarian": "Barbar",
+    "Demon Hunter": "Demonjägare",
+    "Raider": "Härjare",
+    "Assassin": "Lönnmördare",
+    "Swordsman": "Svärdskämpe",
+    "Ranger": "Utbygdsjägare"
   },
   "tables": {
     "meleeDemon": {
