@@ -7,7 +7,7 @@
   "action": {
     "title": "Rollformulär",
     "icon": "https://dbsheet-kohl.vercel.app/icon.svg",
-    "popover": "https://dbsheet-kohl.vercel.app/",
+    "popover": "https://dbsheet-kohl.vercel.app",
     "width": 800,
     "height": 700
   }
