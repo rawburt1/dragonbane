@@ -29,12 +29,20 @@
     </q-expansion-item>
 
     <q-separator />
-    <div class="row justify-start q-px-sm q-mt-md q-mb-sm q-gutter-x-md">
-      <div class="col-xs-4 col-sm-4 col-md-3">
+    <div class="row justify-start q-px-sm q-mt-md q-mb-sm items-center">
+      <div class="col-xs-4 col-sm-4 col-md-3 q-pr-sm">
         <points-block v-model="app.char.hp" :label="t('ui.hp')" />
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-3">
+      <div class="col-xs-4 col-sm-4 col-md-3 q-px-sm">
         <points-block v-model="app.char.wp" :label="t('ui.wp')" />
+      </div>
+      <div class="col-xs-4 col-sm-4 col-md-5 flex items-center justify-start q-pl-md">
+        <div class="text-bold text-h6">
+          {{ t('ui.dmgBonusLabel') }}:
+          <span class="q-ml-sm text-subtitle1 text-normal text-grey-5">
+            {{ t('attributes.STR') }}: {{ app.dmgBonus(Attrs.STR) }}, {{ t('attributes.AGL') }}: {{ app.dmgBonus(Attrs.AGL) }}
+          </span>
+        </div>
       </div>
     </div>
 
