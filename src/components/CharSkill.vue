@@ -1,5 +1,5 @@
 <template>
-  <div :class="`row items-center justify-between q-ma-none q-px-xs ${baned ? 'bg-negative' : ''}`">
+  <div :class="`row items-center justify-between q-ma-none q-px-xs ${baned ? 'bg-orange-8' : ''}`">
     <q-checkbox
       v-if="editSkills"
       class="q-ml-xs q-mb-xs"
